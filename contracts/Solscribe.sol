@@ -9,7 +9,7 @@ import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "./IERC4907.sol";
 
-contract Solscribe is ERC721, IERC4907, Ownable, ReentrancyGuard {
+contract CrptoVillageSolscription is ERC721, IERC4907, Ownable, ReentrancyGuard {
     using Strings for string;
 
     address erc20Contract = 0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48; // USDC ethereum mainnet
@@ -48,7 +48,7 @@ contract Solscribe is ERC721, IERC4907, Ownable, ReentrancyGuard {
     event Revoke(address indexed to, uint256 indexed tokenId);
 
 
-    constructor() ERC721("Subscription Template", "Subscription") {}
+    constructor() ERC721("Crpto Village Solscription", "CVS") {}
     
     /*
     * Withdraw funds
