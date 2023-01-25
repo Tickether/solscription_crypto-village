@@ -148,20 +148,16 @@ contract CrptoVillageSolscription is ERC721, IERC4907, Ownable, ReentrancyGuard 
         require(subscribed[msg.sender], "no subscription token, cannot renew");
         require(expires <= maxMonthlySubs, "Exceeds max sub period");
         
-        IERC20 tokenContract = IERC20(erc20Contract);
-
-        uint256 compondedFee = subscriptionFee * expires;
-        
-        bool transferred = tokenContract.transferFrom(msg.sender, address(this), compondedFee);
-        require(transferred, "failed transfer");   
-
-        
         uint64 subscriptionPeriod = expires * 2592000; // timestamp for 30days multiplied by months to expire 
         uint64 timestamp = uint64(block.timestamp);
-        
         UserInfo storage info =  _users[tokenId];
         require(info.expires < timestamp, "user already subscribed");
         
+        IERC20 tokenContract = IERC20(erc20Contract);
+        uint256 compondedFee = subscriptionFee * expires;
+        bool transferred = tokenContract.transferFrom(msg.sender, address(this), compondedFee);
+        require(transferred, "failed transfer");   
+                
         info.user = user;
         info.expires = subscriptionPeriod + timestamp;
         emit UpdateUser(tokenId, user, subscriptionPeriod + timestamp);
@@ -181,7 +177,6 @@ contract CrptoVillageSolscription is ERC721, IERC4907, Ownable, ReentrancyGuard 
         
         uint64 subscriptionPeriod = expires * 2592000; // timestamp for 30days multiplied by months to expire 
         uint64 timestamp = uint64(block.timestamp);
-
         UserInfo storage info =  _users[tokenId];
         require(info.expires < timestamp, "user already subscribed");
         
