@@ -1,38 +1,87 @@
+@import url('https://fonts.googleapis.com/css?family=Press+Start+2P');
+@import url('https://fonts.googleapis.com/css?family=VT323');
+
 .App {
   text-align: center;
+  font-family: 'Press Start 2P', 'VT323';
+  color: white;
+  background-color: blueviolet;
+  width: 100vW;
+  height: 100vh;
+  position: absolute;
 }
 
-.App-logo {
-  height: 40vmin;
+.connectDiv{
+  justify-content: center;
+  display: flex;
+  margin-top: 45vh;
+}
+
+.welcome{
+  position: relative;
+  top: -230px;
+}
+
+.connectedDiv{
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+  margin-top: 36vh;
+  position: relative;
+}
+
+input{
+  height: 36px;
+  margin-bottom: 20px;
+  margin-right: 5px;
+  margin-left: 5px;
+  text-align: center;
+  font-weight: bolder;
+  font-family: 'Press Start 2P', 'VT323';
+  color: purple;
+}
+
+
+/* CSS */
+button {
+  appearance: none;
+  background-color: #000000;
+  border: 2px solid #1A1A1A;
+  border-radius: 15px;
+  box-sizing: border-box;
+  color: #FFFFFF;
+  cursor: pointer;
+  display: inline-block;
+  font-family: 'Press Start 2P', 'VT323';
+  font-size: 16px;
+  font-weight: 600;
+  line-height: normal;
+  margin: 0;
+  min-height: 60px;
+  max-width: 200px;
+  min-width: 0px;
+  outline: none;
+  padding: 16px 24px;
+  text-align: center;
+  text-decoration: none;
+  transition: all 300ms cubic-bezier(.23, 1, 0.32, 1);
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  width: 100%;
+  will-change: transform;
+}
+
+button:disabled {
   pointer-events: none;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+button:hover {
+  box-shadow: rgba(0, 0, 0, 0.25) 0 8px 15px;
+  transform: translateY(-2px);
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+button:active {
+  box-shadow: none;
+  transform: translateY(0);
 }

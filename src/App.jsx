@@ -293,7 +293,7 @@ function App() {
                   <span>{}</span> You're Ready for subscription!
                   </p>
                   <div>
-                    <button onClick={setSubsERC20}>subscribe in dollars</button>
+                    <button onClick={setSubsERC20}>subscribe in $$$</button>
                     <button onClick={setSubsNative}>subscribe in eth</button>
                   </div>
                 </div>
