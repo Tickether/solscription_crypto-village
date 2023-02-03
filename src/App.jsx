@@ -42,7 +42,7 @@ function App() {
   const [SubsPrice, setSubsPrice] = useState(null)
   const [SubsPriceNative, setSubsPriceNative] = useState(null)
   const [MaxMonthlySubs, setMaxMonthlySubs] = useState(null)
-  const [txnURL, setTxnURL] = useState(null)
+  const [/*txnURL*/, setTxnURL] = useState(null)
   
 
   const connectAccount = async () => { 
@@ -72,11 +72,11 @@ function App() {
       // get prices erc20 and set
       let subsPrice = await cryptoVillageSolscriptionContract.subscriptionFee()
       if (subsPrice['_hex'] === "0x00") {
-        subsPrice = parseInt(subsPrice['_hex'],16)
+        subsPrice = parseInt(subsPrice['_hex'], 16)
         console.log(subsPrice)
         setSubsPrice(subsPrice)
       } else {
-        subsPrice = ethers.utils.formatEther(subsPriceNative)
+        subsPrice = ethers.utils.formatEther(subsPrice)
         console.log(subsPrice)
         setSubsPrice(subsPrice)
       }
@@ -293,8 +293,8 @@ function App() {
                   <span>{}</span> You're Ready for subscription!
                   </p>
                   <div>
-                    <button onClick={setSubsERC20}>subscribe in $$$</button>
-                    <button onClick={setSubsNative}>subscribe in eth</button>
+                    <button onClick={setSubsERC20}>subscribe in $$$<br />{SubsPrice * subsMonth}</button>
+                    <button onClick={setSubsNative}>subscribe in eth <br />{SubsPriceNative * subsMonth} </button>
                   </div>
                 </div>
               )}
