@@ -163,8 +163,9 @@ function App() {
 // tweaks and test due
   async function setSubsERC20() {
     try {
+      const cryptoVillageSolscriptionTokenOwned = await getToken(Address)
       await approveERC20Spend();
-      let response = await CryptoVillageSolscriptionContract.setUserNative(CryptoVillageSolscriptionTokenOwned, Address, subsMonth);
+      let response = await CryptoVillageSolscriptionContract.setUserNative(cryptoVillageSolscriptionTokenOwned, Address, subsMonth);
       console.log('response: ', response)
       const transactionHash = response['hash']
       const txReceipt = []
@@ -174,11 +175,11 @@ function App() {
       console.log('confirming...')
       } while (txReceipt[0] == null) ;
 
-      let userOf = await CryptoVillageSolscriptionContract.userOf(CryptoVillageSolscriptionTokenOwned)
+      let userOf = await CryptoVillageSolscriptionContract.userOf(cryptoVillageSolscriptionTokenOwned)
       console.log(userOf)
       setUserOf(userOf.toLowerCase())
 
-      let userExpires = await CryptoVillageSolscriptionContract.userExpires(CryptoVillageSolscriptionTokenOwned)
+      let userExpires = await CryptoVillageSolscriptionContract.userExpires(cryptoVillageSolscriptionTokenOwned)
       userExpires = parseInt(userExpires['_hex'],16)    
       userExpires = new Date(userExpires * 1000);
       console.log(userExpires.toUTCString())
@@ -192,7 +193,8 @@ function App() {
 
   async function setSubsNative() {
     try {
-      let response = await CryptoVillageSolscriptionContract.setUserNative(CryptoVillageSolscriptionTokenOwned, Address, subsMonth, {value: ethers.utils.parseEther((SubsPriceNative * subsMonth).toString())});
+      const cryptoVillageSolscriptionTokenOwned = await getToken(Address)
+      let response = await CryptoVillageSolscriptionContract.setUserNative(cryptoVillageSolscriptionTokenOwned, Address, subsMonth, {value: ethers.utils.parseEther((SubsPriceNative * subsMonth).toString())});
       console.log('response: ', response)
       const transactionHash = response['hash']
       const txReceipt = []
@@ -202,11 +204,11 @@ function App() {
       console.log('confirming...')
       } while (txReceipt[0] == null) ;
       
-      let userOf = await CryptoVillageSolscriptionContract.userOf(CryptoVillageSolscriptionTokenOwned)
+      let userOf = await CryptoVillageSolscriptionContract.userOf(cryptoVillageSolscriptionTokenOwned)
       console.log(userOf)
       setUserOf(userOf.toLowerCase())
 
-      let userExpires = await CryptoVillageSolscriptionContract.userExpires(CryptoVillageSolscriptionTokenOwned)
+      let userExpires = await CryptoVillageSolscriptionContract.userExpires(cryptoVillageSolscriptionTokenOwned)
       userExpires = parseInt(userExpires['_hex'],16)    
       userExpires = new Date(userExpires * 1000);
       console.log(userExpires.toUTCString())
@@ -222,7 +224,6 @@ function App() {
     try {
       let response = await CryptoVillageSolscriptionContract.getSubscriptionToken();
       console.log('response: ', response)
-      const cryptoVillageSolscriptionURL = await axios.get(`https://api-goerli.etherscan.io/api?module=account&action=tokennfttx&contractaddress=${cryptoVillageSolscriptionAddress}&address=${response.from}&page=1&offset=100&startblock=0&endblock=99999999&sort=asc&apikey=H33B3XXI34JTD48FXA47IHP8B9SCRYDZXP`)
       const transactionHash = response['hash']
       const txReceipt = []
       do {
@@ -232,17 +233,40 @@ function App() {
       } while (txReceipt[0] == null) ;
 
       
-      
       console.log(txReceipt[0])
       console.log(response.from)
+
       setTxnURL(txReceipt[0])
       setAddress(response.from)
-      setCryptoVillageSolscriptionContract(cryptoVillageSolscriptionURL.data.result[0]['tokenID'])
+
+      
       // do checks and navigate to summary or subs page
     } catch (err) {
       console.log( err.error.message )
     }
   }
+
+  
+  async function getToken(address){
+    
+    const cryptoVillageSolscriptionURL = await axios.get(
+      `https://api-goerli.etherscan.io/api?module=account&action=tokennfttx&contractaddress=${cryptoVillageSolscriptionAddress}&address=${address}&page=1&offset=100&startblock=0&endblock=99999999&sort=asc&apikey=H33B3XXI34JTD48FXA47IHP8B9SCRYDZXP`
+      //`https://api-goerli.etherscan.io/api?module=account&action=txlistinternal&txhash=${txReceipt[0]}&apikey=H33B3XXI34JTD48FXA47IHP8B9SCRYDZXP`
+    )
+
+    console.log(cryptoVillageSolscriptionURL)
+    
+    if (address.toLowerCase() === cryptoVillageSolscriptionURL.data.result[0]['to']) {
+      console.log( 'yerr' )
+      const cryptoVillageSolscriptionTokenOwned = cryptoVillageSolscriptionURL.data.result[0]['tokenID'];
+      console.log(cryptoVillageSolscriptionTokenOwned)
+      setCryptoVillageSolscriptionTokenOwned(cryptoVillageSolscriptionTokenOwned)
+      return cryptoVillageSolscriptionTokenOwned
+    }
+    
+  }
+  
+
 
 
   return (
@@ -276,7 +300,7 @@ function App() {
             <div>
               {(Address != null) && (UserOf !== Address) && (
                 <div>
-                  <p>Your have a membership but either you've not yet activated your subscription or it has Expired. Ps: Check below for fee </p>
+                  <p>Your have a membership token but either you've not yet activated your subscription or it has Expired. Ps: Check below for fee </p>
                   <div>
                     <button
                       onClick={handleDecrement}>-
@@ -304,7 +328,7 @@ function App() {
               {(Address != null) && (UserOf === Address) && (
                 <div>
                   <p>Congratulations You're Subscribed</p>
-                  <p>Your Token {CryptoVillageSolscriptionTokenOwned} expires on {UserExpires}</p>
+                  <p>Your Token '{CryptoVillageSolscriptionTokenOwned}' expires on {UserExpires}</p>
                 </div>
               )}
             </div>
