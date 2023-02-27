@@ -121,7 +121,8 @@ function App() {
       
     }
   }
-
+//console.log(UserOf)
+//console.log(Address)
   const handleDecrement = () => {
     if (subsMonth <= 1) return;
     setSubsMonth(subsMonth - 1 );
@@ -184,6 +185,7 @@ function App() {
       userExpires = new Date(userExpires * 1000);
       console.log(userExpires.toUTCString())
       setUserExpires(userExpires.toUTCString())
+      setAddress(userOf.toLowerCase())
       
       console.log(txReceipt[0])
     } catch (err) {
@@ -213,6 +215,7 @@ function App() {
       userExpires = new Date(userExpires * 1000);
       console.log(userExpires.toUTCString())
       setUserExpires(userExpires.toUTCString())
+      setAddress(userOf.toLowerCase())
       
       console.log(txReceipt[0])
     } catch (err) {
